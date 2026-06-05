@@ -26,15 +26,15 @@
         }
 
         html.dark-mode {
-            --bg-primary: #0A0E27;
-            --bg-secondary: #1A1F3A;
-            --text-primary: #F5F5F7;
+            --bg-primary: #000000;
+            --bg-secondary: #1A1A1A;
+            --text-primary: #FFFFFF;
             --text-secondary: #A0A0A6;
             --border-color: rgba(255, 255, 255, 0.1);
-            --glass-bg: rgba(26, 31, 58, 0.6);
+            --glass-bg: rgba(26, 26, 26, 0.7);
             --glass-border: rgba(255, 255, 255, 0.15);
-            --shadow-light: 0 4px 30px rgba(0, 0, 0, 0.3);
-            --shadow-hover: 0 16px 50px rgba(0, 0, 0, 0.4);
+            --shadow-light: 0 4px 30px rgba(0, 0, 0, 0.5);
+            --shadow-hover: 0 16px 50px rgba(0, 0, 0, 0.6);
             --counter-bg: rgba(255, 255, 255, 0.1);
         }
         
@@ -67,9 +67,9 @@
 
         /* ========== THEME TOGGLE BUTTON ========== */
         .theme-toggle {
-            position: fixed;
-            top: 2rem;
-            right: 2rem;
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
             z-index: 100;
             width: 56px;
             height: 56px;
@@ -121,6 +121,12 @@
         .dark-mode .moon-icon {
             opacity: 1;
             transform: rotate(0deg) scale(1);
+        }
+
+        /* ========== ENGINE DATA WRAPPER ========== */
+        .engine-data-wrapper {
+            position: relative;
+            display: inline-block;
         }
 
         /* ========== FADE IN ON LOAD ========== */
@@ -207,6 +213,13 @@
                         backdrop-filter 0.3s ease;
             position: relative;
             overflow: hidden;
+        }
+
+        .dark-mode .bento-glass-card {
+            box-shadow: 
+                inset 0 1px 1px rgba(255, 255, 255, 0.1),
+                var(--shadow-light),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.3);
         }
 
         .bento-glass-card::before {
@@ -410,25 +423,59 @@
             color: var(--text-primary);
         }
 
+        /* ========== RESPONSIVE DESIGN ========== */
         @media (max-width: 768px) {
             .theme-toggle {
-                top: 1rem;
-                right: 1rem;
                 width: 48px;
                 height: 48px;
                 border-radius: 24px;
                 font-size: 20px;
+                bottom: -16px;
+                right: -16px;
             }
+
+            body {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .theme-toggle {
+                width: 44px;
+                height: 44px;
+                border-radius: 22px;
+                font-size: 18px;
+                bottom: -14px;
+                right: -14px;
+            }
+
+            body {
+                padding: 0.75rem;
+            }
+        }
+
+        /* ========== LANDSCAPE MODE ========== */
+        @media (orientation: landscape) and (max-height: 600px) {
+            body {
+                padding: 1rem 2rem;
+            }
+
+            .container-init {
+                space-y: 2;
+            }
+        }
+
+        /* ========== DARK MODE SPECIFIC ADJUSTMENTS ========== */
+        .dark-mode .bento-glass-card::before {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        }
+
+        .dark-mode .project-item:hover span:first-of-type {
+            color: #64B5F6;
         }
     </style>
 </head>
 <body class="p-4 md:p-8 min-h-screen">
-
-    <!-- Theme Toggle Button -->
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle theme">
-        <span class="sun-icon">☀️</span>
-        <span class="moon-icon">🌙</span>
-    </button>
 
     <div class="max-w-6xl w-full mx-auto space-y-4 container-init">
         
@@ -451,7 +498,13 @@
                             </h1>
                             <p class="text-sm font-semibold text-apple-gray">Self-Driven Creator</p>
                         </div>
-                        <span class="meta-tag text-[10px] font-mono px-2.5 py-1 rounded font-bold select-none">ENGINE_DATA</span>
+                        <div class="engine-data-wrapper">
+                            <span class="meta-tag text-[10px] font-mono px-2.5 py-1 rounded font-bold select-none">ENGINE_DATA</span>
+                            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle theme (Cmd+Shift+K)">
+                                <span class="sun-icon">☀️</span>
+                                <span class="moon-icon">🌙</span>
+                            </button>
+                        </div>
                     </div>
                     
                     <!-- Contact Field -->
@@ -589,7 +642,7 @@
                         <span class="font-bold text-[var(--text-primary)] text-sm block group-hover:text-blue-600 transition-colors">Discord Bot Development</span>
                         <span class="text-[10px] text-apple-gray font-mono block">Personal Project // Automation</span>
                         <p class="text-apple-gray leading-relaxed pt-1">
-                            Developed custom systems through self-learning and AI assistance. Integrated modular features: Moderation Systems, Ban Logging, Weather API, Translation Tools, and aut[...]
+                            Developed custom systems through self-learning and AI assistance. Integrated modular features: Moderation Systems, Ban Logging, Weather API, Translation Tools, dan aut[...]
                         </p>
                     </div>
                 </div>
@@ -606,20 +659,20 @@
                     </div>
                     <div class="qa-item space-y-1">
                         <span class="font-bold text-[var(--text-primary)] block">What achievement are you most proud of?</span>
-                        <p class="text-apple-gray leading-relaxed">Building EVOK from scratch. Restarting and rebuilding it in 2026 rather than giving up taught me branding, consistency, and resi[...]</p>
+                        <p class="text-apple-gray leading-relaxed">Building EVOK from scratch. Restarting and rebuilding it in 2026 rather than giving up taught me branding, consistency, dan resi[...]</p>
                     </div>
                     <div class="qa-item space-y-1 pt-2 border-t border-[var(--border-color)]">
                         <span class="font-bold text-[var(--text-primary)] block">What kind of application would you like to build if accepted?</span>
-                        <p class="text-apple-gray leading-relaxed">A community-focused application that helps people connect through shared interests, projects, and activities. It aims to encoura[...]</p>
+                        <p class="text-apple-gray leading-relaxed">A community-focused application that helps people connect through shared interests, projects, dan activities. It aims to encoura[...]</p>
                     </div>
                     <div class="qa-item space-y-1 pt-2 border-t border-[var(--border-color)] grid grid-cols-2 gap-4">
                         <div>
                             <span class="font-bold text-[var(--text-primary)] block">Greatest Strength</span>
-                            <p class="text-apple-gray leading-relaxed">Adaptability, curiosity, and initiative. Willing to take ownership and learn unfamiliar fields independently through hands-o[...]</p>
+                            <p class="text-apple-gray leading-relaxed">Adaptability, curiosity, dan initiative. Willing to take ownership dan learn unfamiliar fields independently through hands-o[...]</p>
                         </div>
                         <div>
                             <span class="font-bold text-[var(--text-primary)] block">Greatest Weakness</span>
-                            <p class="text-apple-gray leading-relaxed">Excited by multiple ideas at once. Over time, I have learned to prioritize more effectively and focus heavily on execution r[...]</p>
+                            <p class="text-apple-gray leading-relaxed">Excited by multiple ideas at once. Over time, I have learned to prioritize more effectively dan focus heavily on execution r[...]</p>
                         </div>
                     </div>
                 </div>
