@@ -8,10 +8,40 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        :root {
+            --bg-primary: #F5F5F7;
+            --bg-secondary: #FFFFFF;
+            --text-primary: #1D1D1F;
+            --text-secondary: #86868B;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --shadow-light: 0 4px 30px rgba(0, 0, 0, 0.01);
+            --shadow-hover: 0 16px 50px rgba(0, 0, 0, 0.08);
+            --counter-bg: rgba(0, 0, 0, 0.05);
+        }
+
+        html.dark-mode {
+            --bg-primary: #0A0E27;
+            --bg-secondary: #1A1F3A;
+            --text-primary: #F5F5F7;
+            --text-secondary: #A0A0A6;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(26, 31, 58, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --shadow-light: 0 4px 30px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 16px 50px rgba(0, 0, 0, 0.4);
+            --counter-bg: rgba(255, 255, 255, 0.1);
+        }
+        
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #F5F5F7; /* Original Apple Off-White */
-            color: #1D1D1F;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             overflow-x: hidden;
         }
 
@@ -29,10 +59,68 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(-45deg, #F5F5F7, #FFFFFF, #F5F5F7, #FFFFFF);
+            background: linear-gradient(-45deg, var(--bg-primary), var(--bg-secondary), var(--bg-primary), var(--bg-secondary));
             background-size: 300% 300%;
             animation: gradientShift 15s ease infinite;
             z-index: -1;
+        }
+
+        /* ========== THEME TOGGLE BUTTON ========== */
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 100;
+            width: 56px;
+            height: 56px;
+            border-radius: 28px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(200%);
+            -webkit-backdrop-filter: blur(20px) saturate(200%);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            font-size: 24px;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-hover);
+            background: var(--glass-bg);
+            border-color: var(--glass-border);
+        }
+
+        .theme-toggle:active {
+            transform: scale(0.95);
+        }
+
+        .sun-icon, .moon-icon {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            position: absolute;
+        }
+
+        .sun-icon {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+        }
+
+        .dark-mode .sun-icon {
+            opacity: 0;
+            transform: rotate(180deg) scale(0.5);
+        }
+
+        .moon-icon {
+            opacity: 0;
+            transform: rotate(180deg) scale(0.5);
+        }
+
+        .dark-mode .moon-icon {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
         }
 
         /* ========== FADE IN ON LOAD ========== */
@@ -80,7 +168,6 @@
             animation: slideInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* Stagger effect untuk multiple cards */
         .reveal-card:nth-child(1) { animation-delay: 0.1s; }
         .reveal-card:nth-child(2) { animation-delay: 0.2s; }
         .reveal-card:nth-child(3) { animation-delay: 0.3s; }
@@ -103,17 +190,21 @@
             animation-fill-mode: forwards;
         }
 
-        /* ========== PREMIUM LIQUID GLASS WITH SMOOTH APPLE DEPTH TRANSITIONS ========== */
+        /* ========== iOS 16 LIQUID GLASS EFFECT ========== */
         .bento-glass-card {
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(30px) saturate(200%);
-            -webkit-backdrop-filter: blur(30px) saturate(200%);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.01);
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px) saturate(200%) brightness(1.1);
+            -webkit-backdrop-filter: blur(25px) saturate(200%) brightness(1.1);
+            border: 1px solid var(--glass-border);
+            box-shadow: 
+                inset 0 1px 1px rgba(255, 255, 255, 0.5),
+                var(--shadow-light),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.1);
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
                         box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
                         background-color 0.3s ease,
-                        border-color 0.3s ease;
+                        border-color 0.3s ease,
+                        backdrop-filter 0.3s ease;
             position: relative;
             overflow: hidden;
         }
@@ -135,12 +226,15 @@
 
         .bento-glass-card:hover {
             transform: translateY(-8px);
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 16px 50px rgba(0, 0, 0, 0.08);
-            border-color: rgba(255, 255, 255, 0.8);
+            background: var(--glass-bg);
+            box-shadow: 
+                inset 0 1px 1px rgba(255, 255, 255, 0.6),
+                var(--shadow-hover),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.15);
+            border-color: var(--glass-border);
         }
 
-        .text-apple-gray { color: #86868B; }
+        .text-apple-gray { color: var(--text-secondary); }
 
         /* ========== INTERACTIVE FILTER PILL STATES ========== */
         @keyframes pillFlip {
@@ -159,6 +253,8 @@
             transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
             cursor: pointer;
             position: relative;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
         }
 
         .filter-pill:hover {
@@ -166,9 +262,16 @@
         }
 
         .filter-pill.active {
-            background-color: #1D1D1F;
-            color: #FFFFFF;
-            box-shadow: 0 4px 12px rgba(29, 29, 31, 0.2);
+            background-color: var(--text-primary);
+            color: var(--bg-primary);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .filter-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--glass-border);
         }
 
         /* ========== SKILL PILLS TRANSITIONS ========== */
@@ -184,23 +287,23 @@
         .skill-node {
             transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
             animation: slideInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
         }
 
         .skill-node:hover {
             transform: translateY(-4px) scale(1.05);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            border-color: #1D1D1F;
+            border-color: var(--text-primary);
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
         }
 
         .skill-node.hidden-node {
             opacity: 0.15;
             transform: scale(0.85);
             pointer-events: none;
-        }
-
-        /* Stagger animation untuk skill nodes */
-        .skill-node {
-            animation-fill-mode: both;
         }
 
         .skill-node:nth-child(1) { animation-delay: 0.05s; }
@@ -242,47 +345,7 @@
         .line-animate {
             animation: lineGrow 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
             width: 0;
-        }
-
-        /* ========== BOUNCE ANIMATION ========== */
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-
-        .bounce-text {
-            animation: bounce 2s ease-in-out infinite;
-        }
-
-        /* ========== ROTATE ANIMATION ========== */
-        @keyframes rotateIcon {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .rotate-icon {
-            animation: rotateIcon 20s linear infinite;
-        }
-
-        /* ========== PROJECT CARD HOVER ========== */
-        .project-item {
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .project-item:hover {
-            transform: translateY(-6px);
-        }
-
-        .project-item:hover span:first-of-type {
-            color: #0071E3;
+            border-color: var(--border-color);
         }
 
         /* ========== HEADER ANIMATION ========== */
@@ -301,20 +364,6 @@
             animation: titleSlide 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* ========== LOADING DOTS ========== */
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 0.3;
-            }
-            50% {
-                opacity: 1;
-            }
-        }
-
-        .pulse-dot {
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-
         /* ========== TAB/FOCUS ANIMATIONS ========== */
         .filter-pill:focus-visible {
             outline: 2px solid #0071E3;
@@ -325,9 +374,61 @@
         html {
             scroll-behavior: smooth;
         }
+
+        /* ========== PROJECT CARD HOVER ========== */
+        .project-item {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .project-item:hover {
+            transform: translateY(-6px);
+        }
+
+        .project-item:hover span:first-of-type {
+            color: #0071E3;
+        }
+
+        /* ========== Q&A HOVER EFFECT ========== */
+        .qa-item:hover {
+            transform: translateX(8px);
+        }
+
+        /* ========== GLASS CARD META STYLES ========== */
+        .meta-tag {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+        }
+
+        .metric-row {
+            color: var(--text-secondary);
+        }
+
+        .metric-row:hover {
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 768px) {
+            .theme-toggle {
+                top: 1rem;
+                right: 1rem;
+                width: 48px;
+                height: 48px;
+                border-radius: 24px;
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
 <body class="p-4 md:p-8 min-h-screen">
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle theme">
+        <span class="sun-icon">☀️</span>
+        <span class="moon-icon">🌙</span>
+    </button>
 
     <div class="max-w-6xl w-full mx-auto space-y-4 container-init">
         
@@ -345,24 +446,24 @@
                 <div class="block w-full mb-4">
                     <div class="flex justify-between items-start">
                         <div class="w-full">
-                            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-[#1D1D1F] leading-none mb-2 glow-text">
+                            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-[var(--text-primary)] leading-none mb-2 glow-text">
                                 GANBI ROBINSON
                             </h1>
                             <p class="text-sm font-semibold text-apple-gray">Self-Driven Creator</p>
                         </div>
-                        <span class="text-[10px] font-mono bg-gray-200/60 px-2.5 py-1 rounded text-apple-gray font-bold select-none">ENGINE_DATA</span>
+                        <span class="meta-tag text-[10px] font-mono px-2.5 py-1 rounded font-bold select-none">ENGINE_DATA</span>
                     </div>
                     
                     <!-- Contact Field -->
-                    <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-xs font-mono text-apple-gray mt-6 pt-4 border-t border-gray-200/40 w-full max-w-md line-animate">
-                        <div>Email:<span class="ml-2 text-[#1D1D1F]">—</span></div>
-                        <div>Phone:<span class="ml-2 text-[#1D1D1F]">—</span></div>
-                        <div>GitHub:<span class="ml-2 text-[#1D1D1F]">—</span></div>
-                        <div>Website:<span class="ml-2 text-[#1D1D1F]">—</span></div>
+                    <div class="grid grid-cols-2 gap-x-4 gap-y-2 text-xs font-mono text-apple-gray mt-6 pt-4 border-t border-[var(--border-color)] w-full max-w-md line-animate">
+                        <div>Email:<span class="ml-2 text-[var(--text-primary)]">—</span></div>
+                        <div>Phone:<span class="ml-2 text-[var(--text-primary)]">—</span></div>
+                        <div>GitHub:<span class="ml-2 text-[var(--text-primary)]">—</span></div>
+                        <div>Website:<span class="ml-2 text-[var(--text-primary)]">—</span></div>
                     </div>
                 </div>
                 
-                <div class="space-y-3 text-xs leading-relaxed text-[#1D1D1F] pt-4 border-t border-gray-200/20">
+                <div class="space-y-3 text-xs leading-relaxed text-[var(--text-primary)] pt-4 border-t border-[var(--border-color)]">
                     <p>
                         I am a self-driven creator who enjoys transforming ideas into real experiences. Throughout my journey, I have explored game development, community leadership, web developme[...]
                     </p>
@@ -376,29 +477,29 @@
             <div class="bento-glass-card reveal-card rounded-[32px] p-6 md:p-8 flex flex-col justify-between min-h-[360px]">
                 <div>
                     <span class="text-[10px] font-bold tracking-widest text-apple-gray uppercase block mb-1">Scale of Impact</span>
-                    <span class="text-6xl font-black tracking-tighter block text-[#1D1D1F] leading-none my-1 counter-number" id="counter">30,000+</span>
+                    <span class="text-6xl font-black tracking-tighter block text-[var(--text-primary)] leading-none my-1 counter-number" id="counter">30,000+</span>
                     <span class="text-[11px] font-bold text-apple-gray block uppercase tracking-wider">Members Managed</span>
                 </div>
 
-                <!-- Clean Parametric Sheet Area (No bulky graphics, purely professional) -->
-                <div class="my-3 space-y-2 py-3 border-t border-b border-gray-200/40 text-[11px] font-mono text-apple-gray">
-                    <div class="flex justify-between items-center group cursor-help hover:text-[#1D1D1F] transition-colors" title="Based on tournament execution metrics">
+                <!-- Clean Parametric Sheet Area -->
+                <div class="my-3 space-y-2 py-3 border-t border-b border-[var(--border-color)] text-[11px] font-mono text-apple-gray">
+                    <div class="metric-row flex justify-between items-center group cursor-help" title="Based on tournament execution metrics">
                         <span>[Performance Index]</span>
-                        <span class="text-[#1D1D1F] font-bold">Stable</span>
+                        <span class="text-[var(--text-primary)] font-bold">Stable</span>
                     </div>
-                    <div class="flex justify-between items-center group cursor-help hover:text-green-600 transition-colors" title="Server management retention rate">
+                    <div class="metric-row flex justify-between items-center group cursor-help" title="Server management retention rate">
                         <span>[Retention/Engagement]</span>
                         <span class="text-green-600 font-bold">Active (85%)</span>
                     </div>
-                    <div class="flex justify-between items-center group cursor-help hover:text-[#1D1D1F] transition-colors" title="Response and resolution system handling time">
+                    <div class="metric-row flex justify-between items-center group cursor-help" title="Response and resolution system handling time">
                         <span>[Conflict Resolution]</span>
-                        <span class="text-[#1D1D1F] font-bold">&lt; 1 Hour</span>
+                        <span class="text-[var(--text-primary)] font-bold">&lt; 1 Hour</span>
                     </div>
                 </div>
 
                 <div class="space-y-2 text-xs">
                     <div>
-                        <span class="font-bold block text-[#1D1D1F]">Discord Community Event Administrator (2026)</span>
+                        <span class="font-bold block text-[var(--text-primary)]">Discord Community Event Administrator (2026)</span>
                         <p class="text-apple-gray leading-relaxed mt-0.5">Led Mobile Legends tournament events. Coordinated schedules, registration, moderation, and communication protocols for sm[...]
                     </div>
                 </div>
@@ -410,7 +511,7 @@
                     <span class="text-[10px] font-bold tracking-widest text-apple-gray uppercase block">Capabilities Ecosystem</span>
                     
                     <!-- Interactive iOS-style Category Filters -->
-                    <div class="flex gap-1 bg-gray-200/40 p-0.5 rounded-xl text-[10px] font-bold select-none">
+                    <div class="filter-container flex gap-1 p-0.5 rounded-xl text-[10px] font-bold select-none">
                         <button onclick="filterSkills('all')" id="btn-all" class="filter-pill active px-2.5 py-1 rounded-lg">All</button>
                         <button onclick="filterSkills('tech')" id="btn-tech" class="filter-pill px-2.5 py-1 rounded-lg">Tech</button>
                         <button onclick="filterSkills('design')" id="btn-design" class="filter-pill px-2.5 py-1 rounded-lg">Design</button>
@@ -421,20 +522,20 @@
                 <!-- Dynamic Tag Wrapper -->
                 <div class="flex flex-wrap gap-2 pt-2">
                     <!-- Tech tags -->
-                    <span data-cat="tech" class="skill-node px-3 py-1.5 bg-white border border-gray-200/60 rounded-xl text-xs font-semibold text-[#1D1D1F]">HTML</span>
-                    <span data-cat="tech" class="skill-node px-3 py-1.5 bg-white border border-gray-200/60 rounded-xl text-xs font-semibold text-[#1D1D1F]">Basic Web Development</span>
-                    <span data-cat="tech" class="skill-node px-3 py-1.5 bg-white border border-gray-200/60 rounded-xl text-xs font-semibold text-[#1D1D1F]">Basic UI/UX Design</span>
+                    <span data-cat="tech" class="skill-node px-3 py-1.5 rounded-xl text-xs font-semibold">HTML</span>
+                    <span data-cat="tech" class="skill-node px-3 py-1.5 rounded-xl text-xs font-semibold">Basic Web Development</span>
+                    <span data-cat="tech" class="skill-node px-3 py-1.5 rounded-xl text-xs font-semibold">Basic UI/UX Design</span>
                     <!-- Design tags -->
-                    <span data-cat="design" class="skill-node px-3 py-1.5 bg-white border border-gray-200/60 rounded-xl text-xs font-semibold text-[#1D1D1F]">Adobe Photoshop</span>
-                    <span data-cat="design" class="skill-node px-3 py-1.5 bg-white border border-gray-200/60 rounded-xl text-xs font-semibold text-[#1D1D1F]">Canva</span>
+                    <span data-cat="design" class="skill-node px-3 py-1.5 rounded-xl text-xs font-semibold">Adobe Photoshop</span>
+                    <span data-cat="design" class="skill-node px-3 py-1.5 rounded-xl text-xs font-semibold">Canva</span>
                     <!-- Professional tags -->
-                    <span data-cat="prof" class="skill-node px-3 py-1.5 bg-white border border-gray-200/60 rounded-xl text-xs font-semibold text-[#1D1D1F]">Leadership</span>
-                    <span data-cat="prof" class="skill-node px-3 py-1.5 bg-white border border-gray-200/60 rounded-xl text-xs font-semibold text-[#1D1D1F]">Community Management</span>
-                    <span data-cat="prof" class="skill-node px-3 py-1.5 bg-white border border-gray-200/60 rounded-xl text-xs font-semibold text-[#1D1D1F]">Event Organization</span>
-                    <span data-cat="prof" class="skill-node px-3 py-1.5 bg-white border border-gray-200/60 rounded-xl text-xs font-semibold text-[#1D1D1F]">Problem Solving</span>
-                    <span data-cat="prof" class="skill-node px-3 py-1.5 bg-white border border-gray-200/60 rounded-xl text-xs font-semibold text-[#1D1D1F]">Communication</span>
-                    <span data-cat="prof" class="skill-node px-3 py-1.5 bg-white border border-gray-200/60 rounded-xl text-xs font-semibold text-[#1D1D1F]">Content Creation & Clipping</span>
-                    <span data-cat="prof" class="skill-node px-3 py-1.5 bg-white border border-gray-200/60 rounded-xl text-xs font-semibold text-[#1D1D1F]">Livestream Management</span>
+                    <span data-cat="prof" class="skill-node px-3 py-1.5 rounded-xl text-xs font-semibold">Leadership</span>
+                    <span data-cat="prof" class="skill-node px-3 py-1.5 rounded-xl text-xs font-semibold">Community Management</span>
+                    <span data-cat="prof" class="skill-node px-3 py-1.5 rounded-xl text-xs font-semibold">Event Organization</span>
+                    <span data-cat="prof" class="skill-node px-3 py-1.5 rounded-xl text-xs font-semibold">Problem Solving</span>
+                    <span data-cat="prof" class="skill-node px-3 py-1.5 rounded-xl text-xs font-semibold">Communication</span>
+                    <span data-cat="prof" class="skill-node px-3 py-1.5 rounded-xl text-xs font-semibold">Content Creation & Clipping</span>
+                    <span data-cat="prof" class="skill-node px-3 py-1.5 rounded-xl text-xs font-semibold">Livestream Management</span>
                 </div>
             </div>
 
@@ -449,14 +550,14 @@
                     </div>
                 </div>
 
-                <div class="pt-3 border-t border-gray-200/40 space-y-2">
+                <div class="pt-3 border-t border-[var(--border-color)] space-y-2">
                     <span class="text-[10px] font-bold tracking-widest text-apple-gray uppercase block">Other Leadership</span>
                     <div class="text-xs">
-                        <span class="font-bold block text-[#1D1D1F]">Scout Camp Leader (2019)</span>
+                        <span class="font-bold block text-[var(--text-primary)]">Scout Camp Leader (2019)</span>
                         <p class="text-apple-gray leading-relaxed">Managed group activities, team coordination, and field tactical decisions.</p>
                     </div>
                     <div class="text-xs">
-                        <span class="font-bold block text-[#1D1D1F]">OSIS Member</span>
+                        <span class="font-bold block text-[var(--text-primary)]">OSIS Member</span>
                         <p class="text-apple-gray leading-relaxed">Worked collaboratively with student bodies and teachers to support school activities.</p>
                     </div>
                 </div>
@@ -469,7 +570,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
                     <!-- Project 1 -->
                     <div class="project-item space-y-1 group">
-                        <span class="font-bold text-[#1D1D1F] text-sm block group-hover:text-blue-600 transition-colors">EVOK Clothing Brand & Web</span>
+                        <span class="font-bold text-[var(--text-primary)] text-sm block group-hover:text-blue-600 transition-colors">EVOK Clothing Brand & Web</span>
                         <span class="text-[10px] text-apple-gray font-mono block">Founder & Owner | 2024–Present</span>
                         <p class="text-apple-gray leading-relaxed pt-1">
                             An independent clothing brand founded to explore entrepreneurship and product development. Restructured and restarted in 2026 with a stronger vision. Built and maintai[...]
@@ -477,7 +578,7 @@
                     </div>
                     <!-- Project 2 -->
                     <div class="project-item space-y-1 group">
-                        <span class="font-bold text-[#1D1D1F] text-sm block group-hover:text-blue-600 transition-colors">Cruise Social (Roblox)</span>
+                        <span class="font-bold text-[var(--text-primary)] text-sm block group-hover:text-blue-600 transition-colors">Cruise Social (Roblox)</span>
                         <span class="text-[10px] text-apple-gray font-mono block">Personal Project | 2025</span>
                         <p class="text-apple-gray leading-relaxed pt-1">
                             A social-focused game independently designed, built, and programmed from scratch. Attracted approximately 10–20 active players, gaining true end-to-end product deplo[...]
@@ -485,7 +586,7 @@
                     </div>
                     <!-- Project 3 -->
                     <div class="project-item space-y-1 group">
-                        <span class="font-bold text-[#1D1D1F] text-sm block group-hover:text-blue-600 transition-colors">Discord Bot Development</span>
+                        <span class="font-bold text-[var(--text-primary)] text-sm block group-hover:text-blue-600 transition-colors">Discord Bot Development</span>
                         <span class="text-[10px] text-apple-gray font-mono block">Personal Project // Automation</span>
                         <p class="text-apple-gray leading-relaxed pt-1">
                             Developed custom systems through self-learning and AI assistance. Integrated modular features: Moderation Systems, Ban Logging, Weather API, Translation Tools, and aut[...]
@@ -499,32 +600,32 @@
                 <span class="text-[10px] font-bold tracking-widest text-apple-gray uppercase block">Apple Developer Academy Strategic Spec Q&A</span>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
-                    <div class="space-y-1 hover:translate-x-1 transition-transform">
-                        <span class="font-bold text-[#1D1D1F] block">Why do you want to join Apple Developer Academy?</span>
+                    <div class="qa-item space-y-1">
+                        <span class="font-bold text-[var(--text-primary)] block">Why do you want to join Apple Developer Academy?</span>
                         <p class="text-apple-gray leading-relaxed">I want to join to accelerate my growth as a product creator, learn from experienced mentors, collaborate with talented peers, ex[...]</p>
                     </div>
-                    <div class="space-y-1 hover:translate-x-1 transition-transform">
-                        <span class="font-bold text-[#1D1D1F] block">What achievement are you most proud of?</span>
+                    <div class="qa-item space-y-1">
+                        <span class="font-bold text-[var(--text-primary)] block">What achievement are you most proud of?</span>
                         <p class="text-apple-gray leading-relaxed">Building EVOK from scratch. Restarting and rebuilding it in 2026 rather than giving up taught me branding, consistency, and resi[...]</p>
                     </div>
-                    <div class="space-y-1 pt-2 border-t border-gray-200/40 hover:translate-x-1 transition-transform">
-                        <span class="font-bold text-[#1D1D1F] block">What kind of application would you like to build if accepted?</span>
+                    <div class="qa-item space-y-1 pt-2 border-t border-[var(--border-color)]">
+                        <span class="font-bold text-[var(--text-primary)] block">What kind of application would you like to build if accepted?</span>
                         <p class="text-apple-gray leading-relaxed">A community-focused application that helps people connect through shared interests, projects, and activities. It aims to encoura[...]</p>
                     </div>
-                    <div class="space-y-1 pt-2 border-t border-gray-200/40 grid grid-cols-2 gap-4">
-                        <div class="hover:translate-x-1 transition-transform">
-                            <span class="font-bold text-[#1D1D1F] block">Greatest Strength</span>
+                    <div class="qa-item space-y-1 pt-2 border-t border-[var(--border-color)] grid grid-cols-2 gap-4">
+                        <div>
+                            <span class="font-bold text-[var(--text-primary)] block">Greatest Strength</span>
                             <p class="text-apple-gray leading-relaxed">Adaptability, curiosity, and initiative. Willing to take ownership and learn unfamiliar fields independently through hands-o[...]</p>
                         </div>
-                        <div class="hover:translate-x-1 transition-transform">
-                            <span class="font-bold text-[#1D1D1F] block">Greatest Weakness</span>
+                        <div>
+                            <span class="font-bold text-[var(--text-primary)] block">Greatest Weakness</span>
                             <p class="text-apple-gray leading-relaxed">Excited by multiple ideas at once. Over time, I have learned to prioritize more effectively and focus heavily on execution r[...]</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Footer Metrics Bar -->
-                <div class="pt-4 border-t border-gray-200/40 flex flex-wrap justify-between items-center text-[11px] font-medium text-apple-gray gap-2">
+                <div class="pt-4 border-t border-[var(--border-color)] flex flex-wrap justify-between items-center text-[11px] font-medium text-apple-gray gap-2">
                     <div class="flex gap-4">
                         <div><strong>Languages:</strong> Indonesian (Native) • English (Intermediate)</div>
                         <div><strong>Achievements:</strong> Academic Excellence Awards (1st Place x2, 2nd Place x1, 3rd Place x1)</div>
@@ -538,19 +639,42 @@
 
     <!-- Micro-Interaction Scripts -->
     <script>
+        // ========== THEME TOGGLE FUNCTIONALITY ==========
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light-mode';
+        
+        if (currentTheme === 'dark-mode') {
+            htmlElement.classList.add('dark-mode');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            htmlElement.classList.toggle('dark-mode');
+            
+            const theme = htmlElement.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode';
+            localStorage.setItem('theme', theme);
+        });
+
+        // ========== KEYBOARD SHORTCUT: Cmd+Shift+K or Ctrl+Shift+K ==========
+        document.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'K') {
+                e.preventDefault();
+                themeToggle.click();
+            }
+        });
+
         // ========== FILTER SKILLS FUNCTION ==========
         function filterSkills(category) {
-            // Update filter pill active states dengan animasi
             document.querySelectorAll('.filter-pill').forEach(btn => {
                 btn.classList.remove('active');
             });
             document.getElementById('btn-' + category).classList.add('active');
 
-            // Toggle skills nodes visibility/opacity smoothly
             document.querySelectorAll('.skill-node').forEach((node, index) => {
                 if (category === 'all' || node.getAttribute('data-cat') === category) {
                     node.classList.remove('hidden-node');
-                    // Re-trigger animation
                     node.style.animation = 'none';
                     setTimeout(() => {
                         node.style.animation = '';
@@ -565,7 +689,7 @@
         function animateCounter() {
             const counter = document.getElementById('counter');
             const target = 30000;
-            const duration = 2000; // 2 detik
+            const duration = 2000;
             const start = Date.now();
 
             function update() {
@@ -610,8 +734,6 @@
 
         // ========== SMOOTH PAGE LOAD ANIMATION ==========
         document.addEventListener('DOMContentLoaded', () => {
-            // Container sudah animated via CSS
-            // Tambah delay untuk trigger counter jika user scroll cepat
             const counterElement = document.getElementById('counter');
             const counterObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
