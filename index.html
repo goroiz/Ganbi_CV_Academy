@@ -67,9 +67,9 @@
 
         /* ========== THEME TOGGLE BUTTON ========== */
         .theme-toggle {
-            position: absolute;
-            bottom: -20px;
-            right: -20px;
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
             z-index: 100;
             width: 56px;
             height: 56px;
@@ -430,8 +430,8 @@
                 height: 48px;
                 border-radius: 24px;
                 font-size: 20px;
-                bottom: -16px;
-                right: -16px;
+                bottom: 20px;
+                right: 20px;
             }
 
             body {
@@ -445,8 +445,8 @@
                 height: 44px;
                 border-radius: 22px;
                 font-size: 18px;
-                bottom: -14px;
-                right: -14px;
+                bottom: 16px;
+                right: 16px;
             }
 
             body {
@@ -497,12 +497,6 @@
                                 GANBI ROBINSON
                             </h1>
                             <p class="text-sm font-semibold text-apple-gray">Self-Driven Creator</p>
-                        </div>
-                        <div class="engine-data-wrapper">
-                            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle theme (Cmd+Shift+K)">
-                                <span class="sun-icon">☀️</span>
-                                <span class="moon-icon">🌙</span>
-                            </button>
                         </div>
                     </div>
                     
@@ -655,23 +649,28 @@
                     <div class="qa-item space-y-1">
                         <span class="font-bold text-[var(--text-primary)] block">Why do you want to join Apple Developer Academy?</span>
                         <p class="text-apple-gray leading-relaxed">I want to join to accelerate my growth as a product creator, learn from experienced mentors, collaborate with talented peers, ex[...]
+                        </p>
                     </div>
                     <div class="qa-item space-y-1">
                         <span class="font-bold text-[var(--text-primary)] block">What achievement are you most proud of?</span>
                         <p class="text-apple-gray leading-relaxed">Building EVOK from scratch. Restarting and rebuilding it in 2026 rather than giving up taught me branding, consistency, dan resi[...]
+                        </p>
                     </div>
                     <div class="qa-item space-y-1 pt-2 border-t border-[var(--border-color)]">
                         <span class="font-bold text-[var(--text-primary)] block">What kind of application would you like to build if accepted?</span>
                         <p class="text-apple-gray leading-relaxed">A community-focused application that helps people connect through shared interests, projects, dan activities. It aims to encoura[...]
+                        </p>
                     </div>
                     <div class="qa-item space-y-1 pt-2 border-t border-[var(--border-color)] grid grid-cols-2 gap-4">
                         <div>
                             <span class="font-bold text-[var(--text-primary)] block">Greatest Strength</span>
                             <p class="text-apple-gray leading-relaxed">Adaptability, curiosity, dan initiative. Willing to take ownership dan learn unfamiliar fields independently through hands-o[...]
+                            </p>
                         </div>
                         <div>
                             <span class="font-bold text-[var(--text-primary)] block">Greatest Weakness</span>
                             <p class="text-apple-gray leading-relaxed">Excited by multiple ideas at once. Over time, I have learned to prioritize more effectively dan focus heavily on execution r[...]
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -688,6 +687,12 @@
 
         </div>
     </div>
+
+    <!-- Theme Toggle Button (Fixed Position) -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle theme (Cmd+Shift+K)">
+        <span class="sun-icon">☀️</span>
+        <span class="moon-icon">🌙</span>
+    </button>
 
     <!-- Micro-Interaction Scripts -->
     <script>
